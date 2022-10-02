@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Monoton&family=Noto+Sans+JP&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+}
+h1  {
+}
+.name-text{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    font-family: 'Monoton', cursive;
+    font-size: 6.5em;
+    color: black;
+    transition-duration: 0.5s;
+}
+.name-text:hover{
+    color: white;
+    background-color: black;
+}
+

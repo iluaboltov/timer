@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TAK</title>
+    <link rel="stylesheet" href="tak.css">
+</head>
+<body>
+<span class="name-text">
+        <span>Timer</span>
+        <span>ł</span>
+</span>
+<div class="timer-wrap">
+    <div class="input-wrap">
+        <input type="number" id="hour-value" max="99" maxlength="2" placeholder="00h">
+
+        <label for="min-value">Minutes:</label>
+        <input type="number" id="min-value" max="60" maxlength="2" placeholder="00m">
+
+        <label for="sec-value">Seconds:</label>
+        <input type="number" id="sec-value" max="60" maxlength="2" placeholder="00s">
+
+        <button type="submit" id="submit-button">Start</button>
+        <button type="reset" id="reset-button">
+            <span>
+                reset
+            </span>
+        </button>
+    </div>
+    <div id="timer-container"></div>
+</div>
+<script>
+
+    const submit = document.getElementById("submit-button"),
+        reset = document.getElementById("reset-button");
+    submit.addEventListener('click', ()=>{
+
+        const hourValue = document.getElementById("hour-value").value,
+            minutValue = document.getElementById("min-value").value,
+            secValue = document.getElementById("sec-value").value,
+            div = document.getElementById("timer-container");
+        let p = document.createElement("p")
+
+        let timer = new Timer(+hourValue, +minutValue, +secValue, p)
+        let interval = setInterval(()=> {
+            if(timer.process()){
+                p.classList.add('ended')
+                setTimeout(()=>{
+                    p.remove()
+                    interval = {}
+                    timer = null
+                }, 5000)
+                return
+            }
+        }, 1000)
+        div.insertAdjacentElement('beforeend', p)
+
+    })
+
+    reset.addEventListener('click', ()=>{
+        const div = document.getElementById("timer-container");
+        
+    })
+
+    class Timer{
+        constructor(hourValue = 0, minutValue = 0, secValue = 0, p) {
+            this.h = hourValue;
+            this.m = minutValue;
+            this.s = secValue;
+            this.p = p;
+        }
+        process(){
+            this.showTime()
+            this.timer()
+            if(this.h === 0 && this.m === 0  && this.s === 0){
+                return true;
+            }
+        }
+        timer(){
+            if(this.s >= 1){
+                this.s -= 1
+                return;
+            }
+            if(this.m >= 1){
+                this.m -= 1
+                this.s = 59
+                return;
+            }
+            if(this.h >= 1){
+                this.h -= 1
+                this.m = 60
+                return;
+            }
+        }
+        showTime(){
+            let textH,textM, textS;
+            this.h < 10 ? textH = "0" + this.h : textH = this.h
+            this.m < 10 ? textM = "0" + this.m : textM = this.m
+            this.s < 10 ? textS = "0" + this.s : textS = this.s
+            this.p.textContent = textH + ":" + textM + ":" + textS
+        }
+    }
+</script>
+</body>
+</html>
