@@ -74,7 +74,7 @@
         }
         process(){
             this.showTime()
-            this.timer()
+            this.updateTime()
             if(this.h === 0 && this.m === 0  && this.s === 0){
                 return true;
             }
@@ -96,12 +96,12 @@
             }
         }
         showTime(){
-            let textH,textM, textS;
-            this.h < 10 ? textH = "0" + this.h : textH = this.h
-            this.m < 10 ? textM = "0" + this.m : textM = this.m
-            this.s < 10 ? textS = "0" + this.s : textS = this.s
-            this.p.textContent = textH + ":" + textM + ":" + textS
+            this.p.textContent = prefixNum(this.h) + ":" + prefixNum(this.m) + ":" + prefixNum(this.s)
         }
+    }
+
+    const prefixNum = (numb)=>{
+        return numb < 10 ? "0" + numb : numb
     }
 </script>
 </body>

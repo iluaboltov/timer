@@ -14,8 +14,8 @@ h1  {
     color: black;
     transition-duration: 0.5s;
 }
-.name-text:hover{
-    color: white;
-    background-color: black;
-}
+/*.name-text:hover{*/
+/*    color: white;*/
+/*    background-color: black;*/
+/*}*/
 
