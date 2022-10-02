@@ -43,15 +43,18 @@
 
         let timer = new Timer(+hourValue, +minutValue, +secValue, p)
         let interval = setInterval(()=> {
+
+            //REMOVE WHEN END
             if(timer.process()){
                 p.classList.add('ended')
                 setTimeout(()=>{
                     p.remove()
-                    interval = {}
+                    clearInterval(interval)
                     timer = null
                 }, 5000)
-                return
+                return;
             }
+
         }, 1000)
         div.insertAdjacentElement('beforeend', p)
 
