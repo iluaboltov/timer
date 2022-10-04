@@ -7,28 +7,30 @@
 </head>
 <body>
 <div class="wrapper">
-    <div class="timer-text text-color">
+    <div class="timer-label">
         <span >Timer</span>
     </div>
-    <p class="claw"></p>
-    <p class="claw"></p>
-    <p class="claw"></p>
-    <p class="claw"></p>
-    <div class="timer-wrap">
-            <div class="div-input">
-                <label for="hour-value" class="label-color">Hours:</label>
+    <div class="logo-wrap">
+        <p class="claw"></p>
+        <p class="claw"></p>
+        <p class="claw"></p>
+        <p class="claw"></p>
+    </div>
+    <div class="ui-wrapper">
+            <div class="user-input">
+                <label for="hour-value">Hours:</label>
                 <input type="number" id="hour-value" max="99" maxlength="2" placeholder="00h">
 
-                <label for="min-value" class="label-color">Minutes:</label>
+                <label for="min-value">Minutes:</label>
                 <input type="number" id="min-value" max="60" maxlength="2" placeholder="00m">
 
-                <label for="sec-value" class="label-color">Seconds:</label>
+                <label for="sec-value">Seconds:</label>
                 <input type="number" id="sec-value" max="60" maxlength="2" placeholder="00s">
             </div>
 
-            <div class="wrap-button">
-                <button type="submit" id="submit-button"><img src="start.png"></button>
-                <button type="reset" id="reset-button"><img src="restart.png"></button>
+            <div class="button-container">
+                <button type="submit" id="submit-button" ><img src="start.png" alt="start"></button>
+                <button type="reset" id="reset-button"><img src="restart.png" alt="restart"></button>
             </div>
     </div>
     <div id="timer-container" class="time-object"></div>
@@ -53,6 +55,7 @@
 
     const submit = document.getElementById("submit-button"),
         reset = document.getElementById("reset-button");
+        instances = []
     submit.addEventListener('click', ()=>{
         timerCreateProcessing()
     })
@@ -61,51 +64,58 @@
     })
 
     class Timer{
-        constructor(hourValue = 0, minutValue = 0, secValue = 0, p) {
-            this.h = hourValue;
-            this.m = minutValue;
-            this.s = secValue;
-            this.p = p;
+        constructor(hourValue = 0, minutValue = 0, secValue = 0) {
+            this.hours = hourValue;
+            this.minutes = minutValue;
+            this.seconds = secValue;
         }
         process(){
-            this.showTime()
             this.timer()
-            if(this.h === 0 && this.m === 0  && this.s === 0){
+            if(this.hours === 0 && this.minutes === 0  && this.seconds === 0){
+                this.remove()
                 return true;
             }
         }
         timer(){
-            if(this.s >= 1){
-                this.s -= 1
+            if(this.seconds >= 1){
+                this.seconds--
                 return;
             }
-            if(this.m >= 1){
-                this.m -= 1
-                this.s = 59
+            if(this.minutes >= 1){
+                this.minutes--
+                this.seconds = 59
                 return;
             }
-            if(this.h >= 1){
-                this.h -= 1
-                this.m = 60
+            if(this.hours >= 1){
+                this.hours--
+                this.minutes = 60
                 return;
             }
         }
         showTime(){
-            this.p.textContent = prefixNum(this.h) + ":" + prefixNum(this.m) + ":" + prefixNum(this.s)
+            return prefixNum(this.hours) + ":" + prefixNum(this.minutes) + ":" + prefixNum(this.seconds)
         }
+        remove(){
+            delete this
+        }
+    }
+    const showTime = (container, timerContent, timer)=>{
+        timerContent.textContent = timer.showTime()
     }
     const prefixNum = (numb)=>{
         return numb < 10 ? "0" + numb : numb
     }
-    const removeTimer =(element, interval, timerObject)=>{
+    const removeElementsOfTimer =(element, interval)=>{
         element.remove()
-        timerObject = null
         clearInterval(interval)
-        return;
     }
     const timerCreateProcessing = (remove=0)=>{
         if(remove){
-            
+            instances.forEach((timer)=>{
+                timer.remove()
+            })
+            setTimeout(()=>{document.getElementById("timer-container").innerHTML = ""}, 2000)
+            return;
         }
         const hourValue = document.getElementById("hour-value").value,
             minutValue = document.getElementById("min-value").value,
@@ -113,12 +123,14 @@
             div = document.getElementById("timer-container");
 
         let divTimer = document.createElement("div")
-        let timer = new Timer(+hourValue, +minutValue, +secValue, divTimer)
+        let timer = new Timer(Number(hourValue), Number(minutValue), Number(secValue))
+
+        instances.push(timer)
+
         let interval = setInterval(()=> {
-            if(timer.process()){
-                setTimeout(()=>{removeTimer(divTimer, interval, timer)
-                },5000)
-                return
+
+            showTime(div, divTimer, timer)
+            if(timer.process()){setTimeout(()=>{removeElementsOfTimer(divTimer, interval)},5000)
             }
         }, 1000)
         div.insertAdjacentElement('beforeend', divTimer)
