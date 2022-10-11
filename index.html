@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TAK</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrapper">
+    <div class="timer-label">
+        <span >Timer</span>
+    </div>
+    <div class="logo-wrap">
+        <p class="claw"></p>
+        <p class="claw"></p>
+        <p class="claw"></p>
+        <p class="claw"></p>
+    </div>
+    <div class="ui-wrapper">
+            <div class="user-input">
+                <label for="hour-value">Hours:</label>
+                <input type="number" id="hour-value" max="99" maxlength="2" placeholder="00h">
+
+                <label for="min-value">Minutes:</label>
+                <input type="number" id="min-value" max="60" maxlength="2" placeholder="00m">
+
+                <label for="sec-value">Seconds:</label>
+                <input type="number" id="sec-value" max="60" maxlength="2" placeholder="00s">
+            </div>
+
+            <div class="button-container">
+                <button type="submit" id="submit-button" ><img src="start.png" alt="start"></button>
+                <button type="reset" id="reset-button"><img src="restart.png" alt="restart"></button>
+            </div>
+    </div>
+    <div id="timer-container" class="time-object"></div>
+</div>
+<script src="valueChecker.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
